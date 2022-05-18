@@ -32,11 +32,13 @@ public class MinioOssService implements OssService {
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
             }
 
-            // 读取文件的content-type
-            // 方法一--Files.probeContentType(Paths.get(fileUrl))出现读取为null的情况
-            // 方法二--本方式支持本地文件，也支持http/https远程文件
-            // 方法三--URLConnection.getFileNameMap().getContentTypeFor(fileUrl)出现读取为null的情况
-            String contentType = new MimetypesFileTypeMap().getContentType(localAbsolutePathFile);
+             // 读取文件的content-type
+            // 方法一--Files.probeContentType(Paths.get(localAbsolutePathFile.getAbsolutePath()))出现读取为null的情况
+            // 方法二--new MimetypesFileTypeMap().getContentType(localAbsolutePathFile), 支持本地文件, 也支持http/https远程文件
+            // 方法三--URLConnection.getFileNameMap().getContentTypeFor(localAbsolutePathFile.getAbsolutePath())出现读取为null的情况
+
+            // 方法四(建议使用本方式，亲试)--自定义枚举类ContentTypeEnum
+            String contentType = ContentTypeEnum.getContentType(FileUtil.extName(localAbsolutePathFile));
             
             // 上传
             minioClient.uploadObject(
