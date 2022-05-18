@@ -1,5 +1,8 @@
 package com.xhtech.tool.jenkins.service;
 
+import cn.hutool.core.io.FileUtil;
+import com.xhtech.tool.jenkins.util.ContentTypeEnum;
+
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
